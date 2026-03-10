@@ -3,20 +3,28 @@ project:
   output-dir: ../docs/notes
 
 book:
-  title: "Στατιστική στην εκπαιδευτική έρευνα"
+  title: "Στοχαστικές διαδικασίες"
+  subtitle: "STAT402"
   author: "Αλέξανδρος Ρέκκας"
   chapters:
     - index.qmd
     - chapter-01.qmd
-    - chapter-02.qmd
-    - chapter-03.qmd
 
 format:
   html:
     theme: cosmo
     toc: true
-  typst:
+  pdf:
+    pdf-engine: xelatex
     toc: true
-    margin:
-      x: 2cm
-      y: 2cm
+    mainfont: "DejaVu Serif"
+    sansfont: "DejaVu Sans"
+    monofont: "DejaVu Sans Mono"
+    fontsize: 12pt
+    geometry: "margin=2.5cm"
+    babel-lang: "none"
+    include-in-header:
+      text: |
+        \usepackage{polyglossia}
+        \setmainlanguage{greek}
+        \setotherlanguage{english}

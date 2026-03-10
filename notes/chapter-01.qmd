@@ -1,27 +1,178 @@
 ---
-format:
-  html:
-    toc: true
-    toc-depth: 5
-    format-links: [pdf]
-    css: ../styles.css
-  typst: default
+title: Μαρκοβιανές αλυσίδες διακριτού χρόνου
+lang: el
+format: 
+  pdf:
+    pdf-engine: xelatex
+    mainfont: "DejaVu Serif"
+    sansfont: "DejaVu Sans"
+    monofont: "DejaVu Sans Mono"
+    fontsize: 12pt
+    geometry: margin=2.5cm
+    keep-tex: false
+    babel-lang: "none"
+    include-in-header:
+      text: |
+        \usepackage{polyglossia}
+        \setmainlanguage{greek}
+        \setotherlanguage{english}
+        \usepackage{xcolor}
+        \usepackage{titlesec}
+        \usepackage{fancyhdr}
+        \usepackage{hyperref}
+        \usepackage{graphicx}
+        \usepackage{tikz}
+        
+        % --- Colors ---
+        \definecolor{coverband}{HTML}{2C2C2C}
+        \definecolor{accentrule}{HTML}{A0A0A0}
+        \definecolor{titlemain}{HTML}{1A1A1A}
+        \definecolor{subtitlecolor}{HTML}{555555}
+        \definecolor{sectioncolor}{HTML}{1A1A1A}
+        \definecolor{rulecolor}{HTML}{A0A0A0}
+        \definecolor{headercolor}{HTML}{777777}
+
+        % --- Section heading style ---
+        \titleformat{\section}
+          {\color{sectioncolor}\large\bfseries}
+          {\thesection}{1em}{}
+          [\color{rulecolor}\titlerule]
+        \titlespacing*{\section}{0pt}{2ex}{1.5ex}
+
+        % --- Header/Footer ---
+        \pagestyle{fancy}
+        \fancyhf{}
+        \renewcommand{\headrulewidth}{0pt}
+        \fancyhead[R]{\small\itshape\color{headercolor}Υπόμνημα Δημοσιεύσεων}
+        \fancyfoot[C]{\small\color{headercolor}\thepage}
+
+        % --- Page break before each section ---
+        \newcommand{\sectionbreak}{\clearpage}
+
+        % --- Reference block spacing ---
+        \renewcommand{\CSLBlock}[1]{\par\vspace{\baselineskip}\noindent#1}
 ---
 
-```{=typst}
-#set text(font: "Noto Serif", lang: "el") // ensures bold + Greek shaping
-    #let tbox(title, body) = rect(fill: luma(240), stroke: 1pt + gray, radius: 6pt, inset: 10pt)[
-    #text(weight: "bold")[#title]
-    #v(5pt)
-    #body
-  ]
 
-#set list(indent: 18pt)
-#set enum(indent: 18pt)
-```
+## Εισαγωγή
 
-# Τίτλος 1
+$\Rightarrow$ Μέχρι τώρα είχαμε δείγμα από ανεξάρτητες και ισόνομες μεταβλητές $X_1, \dots, X_n$ από έναν πληθυσμό.
+π.χ. δείγμα $\{X_1, \dots, X_n\}$, όπου $X_i \sim$ διακριτή κατανομή.
 
+Τότε η από κοινού κατανομή είναι απλή:
+$$ P(X_1=x_1, \dots, X_n=x_n) = \prod_{i=1}^{n} P(X_i=x_i) $$
+$\rightarrow$ Ανεξάρτητες: $P(X_i=x_i \mid X_j=x_j) = P(X_i=x_i)$
 
-## Τίτλος 2
+$\Rightarrow$ Στο μάθημα αυτό μελετάμε συστήματα και τις εναλλαγές καταστάσεων.
 
+$\Rightarrow$ **Στοχαστική διαδικασία** είναι μια οικογένεια τ.μ. στον χώρο $(\Omega, \mathcal{F}, P)$:
+$$ \{X_t, t \in T\} $$
+με $T$ ένα σύνολο δεικτών συνήθως αριθμήσιμο $T=\{1,2,\dots\}$.
+Μπορεί το πλήθος των μελών της οικογένειας να μην είναι αριθμήσιμο:
+$$ \{X_t, t \ge 0\} $$
+
+Επίσης, ορίζουμε το χώρο καταστάσεων $S$, ο χώρος που δημιουργείται από όλες τις πιθανές τιμές $X_t$.
+
+$\Rightarrow$ Σε αυτήν την περίπτωση, η από κοινού πιθανότητα δεν είναι εύκολο να υπολογιστεί.
+$$ \begin{aligned} 
+P(X_1=x_1, X_2=x_2, \dots, X_n=x_n) &= \\
+&= P(X_1)P(X_2 \mid X_1)P(X_3 \mid X_1,X_2) \dots P(X_n \mid X_{n-1}, \dots, X_1)
+\end{aligned} $$
+
+## Μαρκοβιανή ιδιότητα
+$$ P(X_n=x_n \mid X_{n-1}=x_{n-1}, \dots, X_1=x_1) = P(X_n=x_n \mid X_{n-1}=x_{n-1}) $$
+
+$\Rightarrow$ Στοχαστικές διαδικασίες με τη μαρκοβιανή ιδιότητα ονομάζονται **Μαρκοβιανές Αλυσίδες (ΜΑ)**.
+
+---
+
+$S = \{1, 2, \dots, k\} \rightsquigarrow$ χώρος καταστάσεων
+
+$$ p_{ij}(t) = P(X_t = j \mid X_{t-1} = i) $$
+$\hookrightarrow$ Πιθανότητα μετάβασης $i \longrightarrow j$
+
+$$ \mathbb{P}(t) = \begin{pmatrix} 
+p_{11}(t) & p_{12}(t) & \dots & p_{1k}(t) \\
+\vdots & & & \vdots \\
+p_{k1}(t) & p_{k2}(t) & \dots & p_{kk}(t) 
+\end{pmatrix} $$
+$\hookrightarrow$ Πίνακας μετάβασης
+
+## Ομογενής Μ.Α. (ή στατική ~ stationary)
+$$ p_{ij} = P(X_t = j \mid X_{t-1} = i) $$
+ανεξάρτητη του $t$, για κάθε $t = 1, 2, \dots$
+
+$\Rightarrow$ Σε μια ομογενή Μ.Α. έχουμε ένα μόνο $\mathbb{P}$.
+$\Rightarrow$ Σε μη ομογενή Μ.Α. έχουμε $\{\mathbb{P}(t)\}_{t \ge 0}^{\infty}$.
+
+**Ιδιότητες $\mathbb{P}(t)$**
+$\Rightarrow \sum_{j=1}^{k} p_{ij} = 1$ (άθροισμα γραμμών)
+
+$\hookrightarrow p_{i1} + p_{i2} + \dots + p_{ik} =$
+$$ \begin{aligned} 
+&= P(X_t=1 \mid X_{t-1}=i) + P(X_t=2 \mid X_{t-1}=i) + \dots + P(X_t=k \mid X_{t-1}=i) \\
+&= P((X_t=1) \cup (X_t=2) \cup \dots \cup (X_t=k) \mid X_{t-1}=i) \\
+&= P(X_t \in S \mid X_{t-1}=i) = 1
+\end{aligned} $$
+
+---
+
+## Απλός Τυχαίος Περίπατος (Εισαγωγή)
+
+$$ X_i = \begin{cases} 
+1, & p = 1/2 \\
+-1, & p = 1/2 
+\end{cases} $$
+
+Ορίζουμε $S_n$ τη θέση ύστερα από $n$ βήματα.
+$\rightarrow S_0 = 0$
+$\rightarrow S_n = \sum_{i=1}^{n} X_i$
+
+$$ \Rightarrow E\{S_n\} = E\left\{\sum_{i=1}^{n} X_i\right\} = \sum_{i=1}^{n} E\{X_i\} $$
+$$ \hookrightarrow E\{X_i\} = \frac{1}{2} \cdot 1 + \frac{1}{2}(-1) = 0 $$
+$$ \Rightarrow E\{S_n\} = 0 $$
+
+Λόγω ανεξαρτησίας έχουμε:
+$$ \Rightarrow Var\{S_n\} = Var\left\{\sum_{i=1}^{n} X_i\right\} = \sum_{i=1}^{n} Var\{X_i\} $$
+$$ \hookrightarrow Var\{X_i\} = E\{X_i^2\} - \underbrace{(E\{X_i\})^2}_{0} $$
+$$ \rightarrow X_i^2 = 1 \Rightarrow E\{X_i^2\} = 1 $$
+$$ \Rightarrow Var\{S_n\} = \sum_{i=1}^{n} Var\{X_i\} = n $$
+
+$\rightsquigarrow$ Παρόλο που η αναμενόμενη τιμή είναι 0, η αβεβαιότητα μεγαλώνει όσο αυξάνονται τα βήματα.
+
+---
+
+## Θεώρημα
+Εάν $\mathbb{P}$ είναι ο πίνακας μετάβασης μιας ΜΑ, τότε:
+(1) $\mathbb{P}(n) = \mathbb{P}(0) \mathbb{P}^n$
+(2) $p_{ij}(m+n) = \sum_{\ell=0}^{k} p_{i\ell}(m) p_{\ell j}(n) \Rightarrow$ Chapman-Kolmogorov
+
+**Απόδειξη:**
+(1) $P_m(n) :=$ Η πιθανότητα να βρισκόμαστε στην κατάσταση $m \in S$ ύστερα από $n$ βήματα.
+
+$n-1 \longrightarrow n: \mathbb{P}$
+$1 \longrightarrow m: p_1(n-1) p_{1m}$
+$\vdots$
+$k \longrightarrow m: p_k(n-1) p_{km}$
+
+$$ P_m(n) = p_1(n-1)p_{1m} + p_2(n-1)p_{2m} + \dots + p_k(n-1)p_{km} \Rightarrow $$
+
+$$ \left. \begin{aligned}
+\mathbb{P}(n) &= \mathbb{P}(n-1) \mathbb{P} \\
+\mathbb{P}(n-1) &= \mathbb{P}(n-2) \mathbb{P} \\
+& \vdots \\
+\mathbb{P}(1) &= \mathbb{P}(0) \mathbb{P}
+\end{aligned} \right\} \Rightarrow \mathbb{P}(n) = \mathbb{P}(0) \mathbb{P}^n $$
+
+(2) Παρατηρούμε ότι: $p_{ij}(n)$ είναι το $(i,j)$ στοιχείο του πίνακα $\mathbb{P}^n$.
+
+$$ \begin{aligned}
+p_{ij}(2) &= \sum_{\ell=1}^{k} p_{i\ell} p_{\ell j} \stackrel{(i,j)}{\longrightarrow} \mathbb{P}^2 \\
+p_{ij}(3) &= \sum_{\ell=1}^{k} p_{i\ell}(2) p_{\ell j} \stackrel{(i,j)}{\longrightarrow} \mathbb{P}^2 \cdot \mathbb{P} = \mathbb{P}^3 \\
+&\vdots \\
+p_{ij}(n) &= \sum_{\ell=1}^{k} p_{i\ell}(n-1) p_{\ell j} \stackrel{(i,j)}{\longrightarrow} \mathbb{P}^{n-1} \cdot \mathbb{P} = \mathbb{P}^n \\
+p_{ij}(m+n) &\stackrel{(i,j)}{\longrightarrow} \mathbb{P}^{m+n} = \mathbb{P}^m \cdot \mathbb{P}^n
+\end{aligned} $$
+
+Άρα 
+$$ p_{ij}(m+n) = \sum_{\ell=1}^{k} p_{i\ell}(m) \cdot p_{\ell j}(n) $$
