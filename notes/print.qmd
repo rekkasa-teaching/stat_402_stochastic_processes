@@ -1,10 +1,11 @@
 ---
-title: "My Book (Print PDF)"
+title: "Στοχαστικές διαδικασίες"
 lang: el
 format:
   pdf:
     pdf-engine: xelatex
     toc: true
+    toc-title: "Περιεχόμενα"
     number-sections: true
     mainfont: "DejaVu Serif"
     sansfont: "DejaVu Sans"
@@ -18,11 +19,41 @@ format:
         \usepackage{polyglossia}
         \setmainlanguage{greek}
         \setotherlanguage{english}
+        \usepackage{xcolor}
+        \usepackage{fancyhdr}
+        \usepackage{tcolorbox}
+        \tcbuselibrary{theorems, skins, breakable}
         \usepackage{titlesec}
         \titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
         \titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
         \titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
         \newcommand{\sectionbreak}{\clearpage}
+
+        % --- Definition box ---
+        \newtcbtheorem[number within=section]{definition}{Ορισμός}{
+          enhanced,
+          breakable,
+          colback=white,
+          colframe=black!70,
+          fonttitle=\bfseries,
+          separator sign={ ---},
+          attach boxed title to top left={yshift=-2mm, xshift=4mm},
+          boxed title style={colback=black!70, coltext=white}
+        }{def}
+
+        % --- Theorem box ---
+        \newtcbtheorem[number within=section]{theorem}{Θεώρημα}{
+          enhanced,
+          breakable,
+          colback=white,
+          colframe=black!40,
+          boxrule=0.8pt,
+          fonttitle=\bfseries,
+          separator sign={ ---},
+          attach boxed title to top left={yshift=-2mm, xshift=4mm},
+          boxed title style={colback=black!40, coltext=white}
+        }{thm}
 ---
 
 {{< include chapter-01.qmd >}}
+{{< include chapter-02.qmd >}}
